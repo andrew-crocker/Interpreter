@@ -49,7 +49,8 @@ bool Editor::command(string command_line) {
 		}
 	}
 	
-	
+	// Check to see if our line table is empty
+	empty = (line_table.size() == 0) ? true : false;
 	
 	// If the command is not insert and the list is empty
 	// then inform the user of such and return to caller
@@ -65,7 +66,7 @@ bool Editor::command(string command_line) {
 	case 'Q': // Quit
 		{
 			if (pending_save) {
-				sprintf(user_prompt, "Would you like to save your work first? [Y/N]: ");
+				sprintf(user_prompt, "Would you like to save your work? [Y/N]: ");
 				string response = ask_user(user_prompt);
 				if (response[0] == 'N') {
 					return true;
@@ -89,6 +90,7 @@ bool Editor::command(string command_line) {
 			cout << "S: Show all lines." << endl;
 			cout << "W: Write source to file." << endl;
 			cout << "L: Load source from file." << endl;
+			cout << "P: Print the parse tree." << endl;
 			cout << "X: Execute source." << endl; 
 			cout << "H: Help." << endl; 
 			cout << "Q: Quit BASIC interpreter." << endl;
@@ -109,7 +111,7 @@ bool Editor::command(string command_line) {
 			current_line -= command_count;
 			if ( current_line < 0 )
 				current_line = 0;
-			sprintf(line_buffer, "%8ld* ", current_line + 1);
+			sprintf(line_buffer, "%4ld* ", current_line + 1);
 			cout << line_buffer << line_table[current_line]->input_line << endl;
 			return false;
 		}
@@ -126,7 +128,7 @@ bool Editor::command(string command_line) {
 			current_line += command_count;
 			if ( (current_line+1) >= (long)line_table.size() )
 				current_line = line_table.size()-1;
-			sprintf(line_buffer, "%8ld* ", current_line + 1);
+			sprintf(line_buffer, "%4ld* ", current_line + 1);
 			cout << line_buffer << line_table[current_line]->input_line << endl;
 			return false;
 		}
@@ -152,7 +154,7 @@ bool Editor::command(string command_line) {
 			
 			while ( true ) {
 				current_line++;
-				sprintf(line_buffer, "%8d  ", line_number + 1);
+				sprintf(line_buffer, "%4d  ", line_number + 1);
 				cout << line_buffer;
 				getline(cin, insertion_string);
 				if ( insertion_string[0] == 27 || insertion_string == "Esc" || insertion_string == "<Esc>" ) {
@@ -160,7 +162,6 @@ bool Editor::command(string command_line) {
 					break;
 				}
 				pending_save = true;
-				empty = false;
 				insertion_line = new(nothrow) line;
 				insertion_line->input_line = insertion_string;
 				line_table.insert(line_table.begin()+current_line, insertion_line);
@@ -174,7 +175,6 @@ bool Editor::command(string command_line) {
 		{
 			if ( current_line == -1 && line_table.size() == 0 ) {
 				line_table.erase(line_table.begin()+current_line);
-				empty = true;
 				return false;
 			}
 			if (command_count > 0) {
@@ -197,7 +197,6 @@ bool Editor::command(string command_line) {
 					line_table.erase(line_table.begin()+current_line);
 				}
 				if (current_line == -1) {
-					empty = true;
 				}
 			}
 			pending_save = true;
@@ -212,9 +211,9 @@ bool Editor::command(string command_line) {
     		while( iterator != line_table.end() ) {
 				list_string = (*iterator)->input_line;
 				if ( iterator == line_table.begin()+current_line )
-					sprintf(line_buffer, "%8d* ", line_number++);
+					sprintf(line_buffer, "%4d* ", line_number++);
 				else
-					sprintf(line_buffer, "%8d  ", line_number++);
+					sprintf(line_buffer, "%4d  ", line_number++);
     	  		cout << line_buffer << list_string << endl;
     	  		++iterator;
 			}
@@ -222,7 +221,7 @@ bool Editor::command(string command_line) {
 		}
 	case 'C': // Show current line
 		{
-			sprintf(line_buffer, "%8ld  ", current_line + 1);
+			sprintf(line_buffer, "%4ld  ", current_line + 1);
 			cout << line_buffer << line_table[current_line]->input_line << endl;
 			return false;
 		}
@@ -238,6 +237,12 @@ bool Editor::command(string command_line) {
 		}
     case 'X': // Interpreter
     	{
+
+    		// At some point, I will need to write this code.
+    		return false;
+    	}
+    case 'P': // Parser
+    	{
     		interpreting = true;
     		command("W");
 			fstream source;
@@ -248,11 +253,9 @@ bool Editor::command(string command_line) {
 				return false;
 			}
 			// Create the token list
-			token_parser parser(source);
-			parser.parse_tokens();
-			parser.print_tokens();
-
-    		// At some point, I will need to write this code.
+			parser = new token_parser(source);
+			parser->parse_tokens();
+    		parser->print_tokens();
     		interpreting = false;
     		return false;
     	}

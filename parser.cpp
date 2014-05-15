@@ -7,7 +7,6 @@
 
 using namespace std;
 #include "parser.h"
-// #include "editor.h"
 
 // parse the rest of a symbol
 int symbol_token::parse_token(fstream& stream, int input_char) {
@@ -455,29 +454,3 @@ void token_parser::print_tokens() {
 		++iterator;
 	}
 }
-
-// // main program entry point
-// int main(int argc, char *argv[])
-// {
-// 	// Check to see that we have at least a filename
-// 	if ( argc < 2 ) {
-// 		cout << "Invalid command line arguments: need filename" << endl;
-// 		_exit(0);
-// 	}
-// 	string filename = argv[argc-1];
-
-// 	fstream source;
-
-// 	// ope the source file
-// 	source.open(filename.c_str(), ios_base::in);
-// 	if ( source.fail() ) {
-// 		cout << "An error has occurred whilst opening "<< filename << endl;
-// 		_exit(0);
-// 	}
-
-// 	// Create the token list
-// 	token_parser parser(source);
-// 	parser.parse_tokens();
-// 	parser.print_tokens();
-// }
-

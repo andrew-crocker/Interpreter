@@ -22,7 +22,7 @@ class Editor {
 		string filename;
 		vector<line *> line_table;
 		vector<line *>::iterator iterator;
-		// token_parser * basic_parser;
+		token_parser * parser;
 	public:
 		Editor();
 		bool command(string command);

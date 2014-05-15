@@ -42,10 +42,11 @@ int main(int argc, char ** argv) {
 	if (argc > 1) {
 		load_file(argc, argv, editor);
 	}
-	cout << "Welcome to the best text editor you've ever used for BASIC programming!" << endl;
+	cout << "Welcome to ACE, the Awesome C++ Editor." << endl;
+	cout << "ACE is the last editor you'll ever need." << endl;
 	cout << "Type H for Help." << endl << endl;
 	while ( true ) {
-		cout << "[Basic]:  ";
+		cout << "ACE%  ";
 		getline(cin, command_line);
 		if (editor.command(command_line)) {
 			break;
