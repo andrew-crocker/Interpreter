@@ -1,5 +1,5 @@
-#ifndef __TOKEN_DEFINED__
-#define __TOKEN_DEFINED__
+#ifndef _Parser_
+#define _Parser_
 
 #pragma once
 
@@ -128,11 +128,11 @@ class invalid_token : public base_token
 class token_parser
 {
 	private:
-		fstream& source_stream;
+		// fstream& source_stream;
 		list<base_token *> token_list;
 	public:
-		token_parser(fstream& stream) : source_stream(stream) { };
-		bool parse_tokens();
+		// token_parser(fstream& stream) : source_stream(stream) { };
+		bool parse_tokens(line * source_line);
 		void print_tokens();
 };
 

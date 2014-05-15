@@ -1,36 +1,13 @@
-/*
-	The following code parses C/C++ source and prints out a list of tokens.
-	The code is intended to be used as an example of parsing, and nothing
-	else. Having said that, it must be pointed out that whilst this parser
-	does correctly identify and process C/C++ tokens, there are tokens
-	parsed that would not exist when a true C++ compiler tokenised it's
-	input. Preprocessor tokenization is implemented in phase III of the 
-        compiler front-end and such tokens as #, ## would not be seen (i.e. they
-        would have been processed in phase III). Furthermore, tokens enclosed in
-        single quotes would be converted directly into their integer equivalents.
-        Also, unicode characters and unicode sequences are not processed by this
-	example.
-
-	I have endeavoured to put a few checks in the parser to ensure that 
-	double quoted literals and block comments are terminated before the end
-	of file, but this code assumes that the source provided is actually 
-	compilable!!
-
-	The code has been compiled and tested under the Microsoft VC++ version
-	10, B2 Release and no guarantee can be made as to it's compatibility with
-	either other versions of VC++, or any other C++ compiler.
-
-	If you have any problems, with this code please do not hesitate to ask.
-*/
-
 #include <iostream>
 #include <fstream>
 #include <string>
+#include <vector>
 #include <list>
 #include <cctype>
 
 using namespace std;
-#include "C++ Parser.h"
+#include "parser.h"
+#include "editor.h"
 
 // parse the rest of a symbol
 int symbol_token::parse_token(fstream& stream, int input_char) {
@@ -358,17 +335,39 @@ void invalid_token::print_token(void) {
 }
 
 // parse the input source
-bool token_parser::parse_tokens() {
+bool token_parser::parse_tokens(line * source_line) {
 	base_token * token;
 
-	while ( !source_stream.eof() ) {
-		int input_char = source_stream.get();
+	const char * character_pointer = source_line->source_line.c_str();
+	source_line->token_list.clear();
+	int line_length = source_line->source_line.length();
+	while ( true ) {
+		int input_char;
 
+		if ( *character_pointer == 0 ) break;
+		while ( *character_pointer == ' ' || *character_pointer == 0x09 ) character_pointer++;
+		input_char = *character_pointer;
 		// Determine what the leading character is of the sequence,
 		// create an appropriate token and get the actual token
 		// class to parse the rest of it (if any)
+
+
+
+
+		// while ( true ) {
+
+
+
+
+
+	// while ( !source_stream.eof() ) {
+	// 	int input_char = source_stream.get();
+
+	// 	// Determine what the leading character is of the sequence,
+	// 	// create an appropriate token and get the actual token
+	// 	// class to parse the rest of it (if any)
 		
-		while ( !source_stream.eof() ) {
+	// 	while ( !source_stream.eof() ) {
 			// The following do loop is there only because I hate seeing
 			// if () ... else if () ... else if () ... code!!!
 			// Hence it's a do ... while ( false ) - single shot
@@ -460,7 +459,7 @@ bool token_parser::parse_tokens() {
 			// Add the token to the end of the list
 			token_list.push_back(token);
 			continue;
-		}
+		// }
 	}
 	// Add the EOF token to the end of the list
 	token = new(nothrow) eof_token;
@@ -479,28 +478,28 @@ void token_parser::print_tokens() {
 	}
 }
 
-// main program entry point
-int main(int argc, char *argv[])
-{
-	// Check to see that we have at least a filename
-	if ( argc < 2 ) {
-		cout << "Invalid command line arguments: need filename" << endl;
-		_exit(0);
-	}
-	string filename = argv[argc-1];
+// // main program entry point
+// int main(int argc, char *argv[])
+// {
+// 	// Check to see that we have at least a filename
+// 	if ( argc < 2 ) {
+// 		cout << "Invalid command line arguments: need filename" << endl;
+// 		_exit(0);
+// 	}
+// 	string filename = argv[argc-1];
 
-	fstream source;
+// 	fstream source;
 
-	// ope the source file
-	source.open(filename.c_str(), ios_base::in);
-	if ( source.fail() ) {
-		cout << "An error has occurred whilst opening "<< filename << endl;
-		_exit(0);
-	}
+// 	// ope the source file
+// 	source.open(filename.c_str(), ios_base::in);
+// 	if ( source.fail() ) {
+// 		cout << "An error has occurred whilst opening "<< filename << endl;
+// 		_exit(0);
+// 	}
 
-	// Create the token list
-	token_parser parser(source);
-	parser.parse_tokens();
-	parser.print_tokens();
-}
+// 	// Create the token list
+// 	token_parser parser(source);
+// 	parser.parse_tokens();
+// 	parser.print_tokens();
+// }
 
