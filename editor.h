@@ -9,19 +9,18 @@ using namespace std;
 
 class line {
 	public:
-		string source_line;                // Source line as input by user
-		list<base_token *> token_list;     // A list of tokens that are found in the source line
+		string input_line;                 // input from user
+		list<base_token *> token_list;     // A list of tokens from the input line
 };
 
-class line_editor {
-	private:
+class Editor {
+		bool empty;
+		long current_line;
 		vector<line *> line_table;
 		vector<line *>::iterator iterator;
 		line_parser * basic_parser;
-		long current_line;
-		bool empty;
 	public:
-		line_editor();
+		Editor();
 		bool command(string command);
 };
 

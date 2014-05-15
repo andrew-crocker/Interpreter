@@ -10,13 +10,13 @@ using namespace std;
 #include "parser.h"
 #include "editor.h"
 
-line_editor::line_editor() {
+Editor::Editor() {
 	current_line = -1;
 	empty = true;
 	basic_parser = new(nothrow) line_parser;
 }
 
-bool line_editor::command(string command_line) {
+bool Editor::command(string command_line) {
 	char line_buffer[32];
 	unsigned int command_line_length;
 	unsigned char command_char;
@@ -91,7 +91,7 @@ bool line_editor::command(string command_line) {
 			if ( current_line < 0 )
 				current_line = 0;
 			sprintf(line_buffer, "%8ld* ", current_line + 1);
-			cout << line_buffer << line_table[current_line]->source_line << endl;
+			cout << line_buffer << line_table[current_line]->input_line << endl;
 			return false;
 		}
 	case 'D': // More down one or more lines
@@ -108,7 +108,7 @@ bool line_editor::command(string command_line) {
 			if ( (current_line+1) >= (long)line_table.size() )
 				current_line = line_table.size()-1;
 			sprintf(line_buffer, "%8ld* ", current_line + 1);
-			cout << line_buffer << line_table[current_line]->source_line << endl;
+			cout << line_buffer << line_table[current_line]->input_line << endl;
 			return false;
 		}
 	case 'J': // Jump to specified line
@@ -142,7 +142,7 @@ bool line_editor::command(string command_line) {
 				}
 				empty = false;
 				insertion_line = new(nothrow) line;
-				insertion_line->source_line = insertion_string;
+				insertion_line->input_line = insertion_string;
 				if ( basic_parser->parse_string(insertion_line) == true ) {
 					line_table.insert(line_table.begin()+current_line, insertion_line);
 					line_number++;
@@ -194,7 +194,7 @@ bool line_editor::command(string command_line) {
 
 			iterator = line_table.begin();
     		while( iterator != line_table.end() ) {
-				list_string = (*iterator)->source_line;
+				list_string = (*iterator)->input_line;
 				if ( iterator == line_table.begin()+current_line )
 					sprintf(line_buffer, "%8d* ", line_number++);
 				else
@@ -207,7 +207,7 @@ bool line_editor::command(string command_line) {
 	case 'C': // Show current line
 		{
 			sprintf(line_buffer, "%8ld  ", current_line + 1);
-			cout << line_buffer << line_table[current_line]->source_line << endl;
+			cout << line_buffer << line_table[current_line]->input_line << endl;
 			return false;
 		}
 	case 'T': // Move to top of source
@@ -222,6 +222,7 @@ bool line_editor::command(string command_line) {
 		}
     case 'I': // Interpreter
     	{
+    		cout << "Beep boop bop.. I am a robot." << endl;
     		// At some point, I will need to write this code.		
     	}
     }
