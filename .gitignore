@@ -1,2 +1,6 @@
 *.o
 editor
+oldparser.h
+oldparser.cpp
+trialparser.h
+trialparser.cpp
