@@ -1,4 +1,4 @@
-/* comment */
+/* Hello World program to test my editor! */
 #include <iostream>
 using namespace std;
 
