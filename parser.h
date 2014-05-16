@@ -13,7 +13,6 @@ class token_parser {
 	list<base_token *> base_tokens;
 	list<base_token *>::iterator iterator;
 	// list<complete_token *> tokens;
-	//list<int *> tokens;
 public:
 	token_parser(token_lexer *);
 	base_token * current_token();

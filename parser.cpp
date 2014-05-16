@@ -40,58 +40,47 @@ bool token_parser::complete_parse() {
 	while (iterator != base_tokens.end()) {
 		switch(current_token()->get_type()) {
 			case 0: { // t_invalid_token
-				// cout << "Invalid token" << endl;
-				
+				cout << "Invalid token" << endl;
 				break;
 			}
 			case 1: { // t_symbol
-				// cout << "Symbol" << endl;
-				
+				cout << "Symbol" << endl;
 				break;
 			}
 			case 2: { // t_integer
-				// cout << "Integer" << endl;
-				
+				cout << "Integer" << endl;
 				break;
 			}
 			case 3: { // t_keyword
-				// cout << "Keyword" << endl;
-				
+				cout << "Keyword" << endl;
 				break;
 			}
 			case 4: { // t_literal
-				// cout << "Literal" << endl;
-				
+				cout << "Literal" << endl;
 				break;
 			}
 			case 5: { // t_const_literal
-				// cout << "Const Literal" << endl;
-				
+				cout << "Const Literal" << endl;
 				break;
 			}
 			case 6: { // t_punctuation
-				// cout << "Punctuation" << endl;
-				
+				cout << "Punctuation" << endl;
 				break;
 			}
 			case 7: { // t_whitespace
-				// cout << "Whitespace" << endl;
-				
+				cout << "Whitespace" << endl;
 				break;
 			}
 			case 8: { // t_eol
-				// cout << "EOL" << endl;
-				
+				cout << "EOL" << endl;
 				break;
 			}
 			case 9: { // t_eof
-				// cout << "EOF" << endl;
-				
+				cout << "EOF" << endl;
 				break;
 			}
 			default: {
-				// cout << "What the heck is this?" << endl;
-				
+				cout << "What the heck is this?" << endl;
 				break;
 			}
 		}

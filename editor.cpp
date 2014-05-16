@@ -206,7 +206,7 @@ bool Editor::command(string command_line) {
 			pending_save = true;
 			return false;
 		}
-	case 'S': // Show lines (count is ignored for now)
+	case 'S': // Show lines
 		{
 			string list_string;
 			int line_number = 1;
