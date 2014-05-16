@@ -1,58 +1,3 @@
-# FILE:         cxx.cfg
-# PURPOSE:      The Grammar for ARM C++ with _opt factored out,
-# LANGUAGE:     cxx
-# TITLE:        Cfg
-# TARGET:       C++
-#
-# TRANSCRIBED:  Pellegrino   -- 93.04.05 -- scanned from ARM
-# MODIFIED:     {0} McKeeman -- 93.04.05 -- original edit
-#
-#Input format for cxx.cfg:
-#
-#  1) comments must have a '#' in column 1, 
-#     or be an entirely empty line
-#
-#  2) The format of a rule is:
-#       lhs
-#           rhs1
-#           rhs2
-#           ...
-#           rhsN
-#
-#     The left hand side must start with a non-blank in column 1.
-#
-#     The right hand side(s) must start with a blank in column 1.
-#     The r.h.s. must be on one line.
-#     Blanks must be used to separate tokens in the r.h.s.
-#
-#  3) An empty rhs is specified with the predefined keyword:
-#        _E_M_P_T_Y_R_U_L_E_
-#     as the only token on the line.
-#
-#[begin example]
-#
-# ,---- column 1
-# |
-# v
-#
-# # rule xxx
-# xxx
-#     yyy + yyy
-#     zzz xxx
-#
-# # rule yyy (1st alternative is empty)
-# yyy
-#     _E_M_P_T_Y_R_U_L_E_
-#     yyy - xxx
-#
-# # rule zzz (empty)
-# zzz
-#     _E_M_P_T_Y_R_U_L_E_
-#
-#[end example]
-# 
-#--
-
 class-name
     identifier
 
@@ -61,8 +6,6 @@ enum-name
 
 typedef-name
     identifier
-
-# r.17.2 Expressions
 
 expression
     assignment-expression
@@ -252,8 +195,6 @@ literal
     floating-constant
     string-literal
 
-# r.17.3 Declarations
-
 declaration
     decl-specifiers declarator-list ;
     decl-specifiers ;
@@ -356,8 +297,6 @@ declaration-list
 asm-declaration
     asm ( string-literal ) ;
 
-# r.17.4 Declarators
-
 declarator-list
     init-declarator
     declarator-list , init-declarator
@@ -457,8 +396,6 @@ initializer-list
     initializer-list , assignment-expression
     { initializer-list }
     { initializer-list , }
-
-# r.17.5 Class Declarations
 
 class-specifier
     class-head { member-list }
@@ -584,8 +521,6 @@ operator-name
     ( )
     [ ]
 
-# r.17.6 Statements
-
 statement
     labeled-statement
     expression-statement
@@ -640,8 +575,6 @@ jump-statement
 declaration-statement
     declaration
 
-# r.17.8 Templates
-
 template-declaration
     template < template-argument-list > declaration
 
@@ -666,8 +599,6 @@ template-arg-list
 template-arg
     expression
     type-name
-
-# r.17.9 Exception Handling
 
 try-block
     try compound-statement handler-list
