@@ -1,6 +1,3 @@
 *.o
 ace
-oldparser.h
-oldparser.cpp
-trialparser.h
-trialparser.cpp
+unused
