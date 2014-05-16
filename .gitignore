@@ -1,5 +1,5 @@
 *.o
-editor
+ace
 oldparser.h
 oldparser.cpp
 trialparser.h

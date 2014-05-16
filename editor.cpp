@@ -3,10 +3,12 @@
 #include <string>
 #include <list>
 #include <vector>
+#include <sstream>
 
 using namespace std;
 
 #include <cstdio>
+#include "lexer.h"
 #include "parser.h"
 #include "editor.h"
 
@@ -15,13 +17,15 @@ using namespace std;
 string get_filename();
 string ask_user(string);
 
+stringstream source;
+
 Editor::Editor() {
 	current_line = -1;
 	empty = true;
 	has_filename = false;
 	interpreting = false;
 	pending_save = false;
-	// basic_parser = new(nothrow) token_parser;
+	lexer = new token_lexer(source);
 }
 
 bool Editor::command(string command_line) {
@@ -77,23 +81,23 @@ bool Editor::command(string command_line) {
 		}
 	case 'H': // Help
 		{
-			cout << "This mini text editor also serves as an interpreter for your BASIC programs." << endl;
+			cout << "This mini text editor also serves as an interpreter for your C++ programs." << endl;
 			cout << "The following commands will help you navigate your way around the editor:" << endl << endl;
-			cout << "I: Enter Edit mode at current line number. <Esc> to exit Edit mode." << endl;
-			cout << "U: Move up one line, or number of lines specified in argument." << endl;
-			cout << "D: Move down one line, or number of lines specified in argument." << endl;
-			cout << "J: Jump to line specified in argument." << endl;
-			cout << "T: Move to top line." << endl;
-			cout << "B: Move to bottom line." << endl;
-			cout << "R: Remove current line, or line specified in argument." << endl;
-			cout << "C: Show current line." << endl;
-			cout << "S: Show all lines." << endl;
-			cout << "W: Write source to file." << endl;
-			cout << "L: Load source from file." << endl;
-			cout << "P: Print the parse tree." << endl;
-			cout << "X: Execute source." << endl; 
-			cout << "H: Help." << endl; 
-			cout << "Q: Quit BASIC interpreter." << endl;
+			cout << "  I:\tEnter Insert mode at current line number. <Esc> to exit Insert mode." << endl;
+			cout << "  U:\tMove up one line, or number of lines specified in argument." << endl;
+			cout << "  D:\tMove down one line, or number of lines specified in argument." << endl;
+			cout << "  J:\tJump to line specified in argument." << endl;
+			cout << "  T:\tMove to top line." << endl;
+			cout << "  B:\tMove to bottom line." << endl;
+			cout << "  R:\tRemove current line, or line specified in argument." << endl;
+			cout << "  C:\tShow current line." << endl;
+			cout << "  S:\tShow all lines." << endl;
+			cout << "  W:\tWrite source to file." << endl;
+			cout << "  L:\tLoad source from file." << endl;
+			cout << "  P:\tPrint the parse tree." << endl;
+			cout << "  X:\tExecute source." << endl; 
+			cout << "  H:\tHelp." << endl; 
+			cout << "  Q:\tQuit ACE." << endl;
 			cout << endl;	
 			return false;
 		}
@@ -237,25 +241,32 @@ bool Editor::command(string command_line) {
 		}
     case 'X': // Interpreter
     	{
-
     		// At some point, I will need to write this code.
+    		command("Pno");
+    		parser = new token_parser(lexer);
+    		parser->complete_parse();
+
     		return false;
     	}
-    case 'P': // Parser
+    case 'P': // Print parse tokens
     	{
     		interpreting = true;
-    		command("W");
-			fstream source;
-			// open the source file
-			source.open(filename.c_str(), ios_base::in);
-			if ( source.fail() ) {
-				cout << "Error opening " << filename << endl;
-				return false;
+			source.str(string());
+			source.clear();
+			string list_string;
+			iterator = line_table.begin();
+    		while( iterator != line_table.end() ) {
+				list_string = (*iterator)->input_line;
+    	  		source << list_string << endl;
+    	  		++iterator;
 			}
 			// Create the token list
-			parser = new token_parser(source);
-			parser->parse_tokens();
-    		parser->print_tokens();
+			delete lexer;
+			lexer = new token_lexer(source);
+			lexer->parse_tokens();
+			if (command_line != "Pno") {
+	    		lexer->print_tokens();
+			}
     		interpreting = false;
     		return false;
     	}

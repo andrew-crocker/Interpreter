@@ -22,6 +22,7 @@ class Editor {
 		string filename;
 		vector<line *> line_table;
 		vector<line *>::iterator iterator;
+		token_lexer * lexer;
 		token_parser * parser;
 	public:
 		Editor();

@@ -8,6 +8,7 @@ using namespace std;
 
 #include <cstdio>
 #include "parser.h"
+#include "lexer.h"
 #include "editor.h"
 
 void load_file(int argc, char ** argv, Editor &editor) {
@@ -42,8 +43,9 @@ int main(int argc, char ** argv) {
 	if (argc > 1) {
 		load_file(argc, argv, editor);
 	}
-	cout << "Welcome to ACE, the Awesome C++ Editor." << endl;
-	cout << "ACE is the last editor you'll ever need." << endl;
+	cout << "\033[H\033[J" << flush;
+	cout << "Welcome to ACE, the Awesome C++ Editor, and the last editor you'll ever need." << endl;
+	cout << "ACE offers convenient C++ interpreting, and an end to nasty compilers!" << endl;
 	cout << "Type H for Help." << endl << endl;
 	while ( true ) {
 		cout << "ACE%  ";
